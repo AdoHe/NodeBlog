@@ -1,0 +1,15 @@
+{
+	"name": "NodeBlog",
+	"version": "0.0.1",
+	"private": true,
+	"description": "This is a simple blog implememted with node",
+	"author": "TonyHe",
+	"dependencies": {
+		"express": "3.0.3",
+		"ejs": ">=0.0.1",
+		"mongodb": ">=0.9.9",
+		"connect-mongo": "*",
+		"connect-flash": "*",
+		"express-partials": "*"
+	}
+}
