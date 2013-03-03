@@ -31,8 +31,14 @@ app.configure(function() {
 	app.use(express.static(__dirname + '/public'));
 	app.use(function (request, response, next) {
 		var err = request.flash('error') || 'error';
+		var success = request.flash('success');
+		var user = request.session.user;
+
 
 		response.locals.error = err;
+		response.locals.success = success;
+		response.locals.user = user;
+
 		next();
 	});
 
