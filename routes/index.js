@@ -127,10 +127,22 @@ module.exports = function(app) {
 				request.flash('error', '该用户不存在');
 				return response.redirect('/login');
 			}
+			
+			if(user.password != pwd) {
+				request.flash('error', '你输入的密码不正确');
+				return response.redirect('/login');
+			}
 
 			request.session.user = user;
 			request.flash('success', '登录成功');
 			response.redirect('/');
 		});
+	});
+
+	//user logout
+	app.get('/logout', function(request, response) {
+		request.session.user = null;
+		request.flash('success', '登出成功');
+		response.redirect('/');
 	});
 }

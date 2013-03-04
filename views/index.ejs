@@ -1,12 +1,15 @@
-<div class="hero-unit">
-	<h1>欢迎来到MicroBlog</h1>
-	<p>MicroBlog是一个基于Node.js的博客系统</p>
-	<p>
-		<a class="btn btn-primary btn-large" href="/login">登录</a>
-		<a class="btn btn-large" href="/reg">立即注册</a>
-	</p>
-</div>
-
+<% if (!user) { %>
+	<div class="hero-unit">
+		<h1>欢迎来到MicroBlog</h1>
+		<p>MicroBlog是一个基于Node.js的博客系统</p>
+		<p>
+			<a class="btn btn-primary btn-large" href="/login">登录</a>
+			<a class="btn btn-large" href="/reg">立即注册</a>
+		</p>
+	</div>
+<% } else { %>
+<%- partial('say') %>
+<% } %>
 <div class="row">
 	<div class="span4">
 		<h2>Carbo 说</h2>
