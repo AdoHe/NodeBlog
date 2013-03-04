@@ -55,6 +55,7 @@ module.exports = function(app) {
 	});
 
 	//nav to the login page
+	app.get('/login', checkLogin); 
 	app.get('/login', function(request, response) {
 		response.render('login', {title: '用户登录'});
 	});
@@ -145,4 +146,24 @@ module.exports = function(app) {
 		request.flash('success', '登出成功');
 		response.redirect('/');
 	});
+
+	//check whether login
+	function checkLogin(request, response, next) {
+		if(request.session.user) {
+			request.flash('error', '已登入');
+			return response.redirect('/');
+		}else {
+			next();
+		}
+	}
+
+	//check wheter not login
+	function checkNotLogin(request, response, next) {
+		if(!request.session.user) {
+			request.flash('error', '未登入');
+			return response.redirect('/login');
+		}
+
+		next();
+	}
 }
