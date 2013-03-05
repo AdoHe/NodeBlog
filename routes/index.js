@@ -42,6 +42,7 @@ exports.login = function(request, response) {
 };*/
 var crypto = require('crypto');
 var User = require('../models/User');
+var Post = require('../models/Post');
 
 module.exports = function(app) {
 	//nav to the index page
@@ -145,6 +146,46 @@ module.exports = function(app) {
 		request.session.user = null;
 		request.flash('success', '登出成功');
 		response.redirect('/');
+	});
+	
+	//user post a blog
+	app.post('/post', checkLogin);
+	app.post('/post', function(request, response) {
+		var currentUserName = request.session.user.name;
+		var newPost = new Post(currentUserName, request.body.post);
+		newPost.save(function(err) {
+			if(err) {
+				request.flash('error', err);
+				return response.redirect('/');
+			}
+
+			request.flash();
+			response.redirect('/u' + currentUserName);
+		});
+	});
+
+	//nav to personal page
+	app.get('/u/:username', function(request, response) {
+		var username = request.params.username;
+
+		User.get(username, function(err, user) {
+			if(!user) {
+				request.flash('error', 'Still not login');
+				return response.redirect('/');
+			}
+
+			Post.get(user.name, function(err, posts) {
+				if(err) {
+					request.flash('error', err);
+					return response.redirect('/');
+				}
+
+				response.render('user', {
+					title: '',
+					posts: posts,
+				});
+			});
+		});
 	});
 
 	//check whether login
