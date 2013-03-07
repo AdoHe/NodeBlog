@@ -47,7 +47,16 @@ var Post = require('../models/Post');
 module.exports = function(app) {
 	//nav to the index page
 	app.get('/', function(request, response) {
-		response.render('index', {title: 'Express', error: request.flash('error'),});
+		Post.get(null, function(err, posts) {
+			if(err) {
+				posts = [];
+			}
+
+			response.render('index', {
+				title: '用户首页',
+				posts: posts,
+			});
+		});
 	});
 
 	//nav to the reg page
@@ -149,7 +158,7 @@ module.exports = function(app) {
 	});
 	
 	//user post a blog
-	app.post('/post', checkLogin);
+	app.post('/post', checkNotLogin);
 	app.post('/post', function(request, response) {
 		var currentUserName = request.session.user.name;
 		var newPost = new Post(currentUserName, request.body.post);
@@ -159,8 +168,8 @@ module.exports = function(app) {
 				return response.redirect('/');
 			}
 
-			request.flash();
-			response.redirect('/u' + currentUserName);
+			request.flash('success', '发表博文成功');
+			response.redirect('/u/' + currentUserName);
 		});
 	});
 
